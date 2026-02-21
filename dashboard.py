@@ -10,30 +10,29 @@ from data_subset_analysis import data_subset_analysis
 st.set_page_config(page_title="Immune Cell Analysis Dashboard", layout="wide")
 
 def get_cell_frequency_df():
+    """Get cell frequency data as a DataFrame for display in the dashboard."""
     data = get_cell_frequency_data(DB_FILE)
     return pd.DataFrame(data)
 
 def main():
-    # sidebar button for reloading data if needed
-    st.sidebar.header("Data Management")
+    """Main function to run the Streamlit dashboard."""
+    st.sidebar.header("Data Management")  # sidebar button for reloading data if needed
     if st.sidebar.button("Load Data from CSV"):
         import subprocess
         with st.sidebar.status("Loading data from cell-count.csv..."):
-            result = subprocess.run(["python", "load_data.py"], capture_output=True, text=True)
+            result = subprocess.run(["python", "load_data.py"], capture_output=True, text=True, check=False)
             if result.returncode == 0:
                 st.sidebar.success("Data loaded successfully.")
             else:
                 st.sidebar.error("Failed to load data")
                 st.sidebar.write(result.stderr)
 
-    # sidebar option for changing statistical test if needed
-    st.sidebar.header("Statistical Test")
+    st.sidebar.header("Statistical Test")  # sidebar option for changing statistical test if needed
     test_type = st.sidebar.radio("Select Test Type", ["Mann-Whitney U", "t-test"], index=0)
     test_type_key = 'u' if test_type == "Mann-Whitney U" else 't'
 
     st.title("Immune Cell Analysis Dashboard")
     st.markdown("Analysis of immune cell frequencies in patients treated with different therapies.")
-
 
     st.divider()
     st.header("Cell Population Relative Frequency Summary")
@@ -77,4 +76,7 @@ def main():
 
 
 if __name__ == "__main__":
+    import subprocess
+    subprocess.run(["python", "load_data.py"], check=True)
+    subprocess.run(["python", "statistical_analysis.py"], check=True)
     main()
