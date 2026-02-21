@@ -18,14 +18,9 @@ def main():
     """Main function to run the Streamlit dashboard."""
     st.sidebar.header("Data Management")  # sidebar button for reloading data if needed
     if st.sidebar.button("Load Data from CSV"):
-        import subprocess
         with st.sidebar.status("Loading data from cell-count.csv..."):
-
-            if result.returncode == 0:
-                st.sidebar.success("Data loaded successfully.")
-            else:
-                st.sidebar.error("Failed to load data")
-                st.sidebar.write(result.stderr)
+            load_data_main()
+            st.sidebar.success("Data loaded successfully!")
 
     st.sidebar.header("Statistical Test")  # sidebar option for changing statistical test if needed
     test_type = st.sidebar.radio("Select Test Type", ["Mann-Whitney U", "t-test"], index=0)
