@@ -15,7 +15,7 @@ cd interactive-dashboard
 
 Install required packages:
 ```bash
-pip install pandas streamlit matplotlib seaborn scipy
+pip install -r requirements.txt
 ```
 
 ## Data Loading
