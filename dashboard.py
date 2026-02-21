@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import os
 
-from load_data import DB_FILE
+from load_data import DB_FILE, main as load_data_main
 from initial_analysis import get_cell_frequency_data
 from statistical_analysis import statistical_analysis
 from data_subset_analysis import data_subset_analysis
@@ -20,7 +20,7 @@ def main():
     if st.sidebar.button("Load Data from CSV"):
         import subprocess
         with st.sidebar.status("Loading data from cell-count.csv..."):
-            result = subprocess.run(["python", "load_data.py"], capture_output=True, text=True, check=False)
+
             if result.returncode == 0:
                 st.sidebar.success("Data loaded successfully.")
             else:
@@ -76,7 +76,6 @@ def main():
 
 
 if __name__ == "__main__":
-    import subprocess
-    subprocess.run(["python", "load_data.py"], check=True)
-    subprocess.run(["python", "statistical_analysis.py"], check=True)
+    load_data_main()  # Load data from CSV into the database
+    statistical_analysis()  # Run statistical analysis to generate the boxplot image
     main()
