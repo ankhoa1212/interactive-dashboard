@@ -3,6 +3,7 @@ import sqlite3
 DB_FILE = 'cell-count.db'
 
 def get_cell_frequency_data(db_file):
+    """Get cell frequency data from the database and calculate relative frequencies."""
     conn = sqlite3.connect(db_file)
     cursor = conn.cursor()
 
