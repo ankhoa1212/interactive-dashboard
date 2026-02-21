@@ -1,15 +1,16 @@
 
-# Teiko Technical Immune Cell Analysis
+# Interactive Dashboard
 
 ## Prerequisites
-
+- Python
+- pip
 
 ## Setup
 
 Clone this repository:
 ```bash
-git clone <repo-url>
-cd teiko-technical
+git clone https://github.com/ankhoa1212/interactive-dashboard.git
+cd interactive-dashboard
 ```
 
 Install required packages:
