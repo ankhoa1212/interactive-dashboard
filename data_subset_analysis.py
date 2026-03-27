@@ -4,10 +4,34 @@ import pandas as pd
 DB_FILE = 'cell-count.db'
 
 
-
 def data_subset_analysis(return_dict=False, filters=None):
+    """Analyze subset of data based on filters and print summary statistics."""
     conn = sqlite3.connect(DB_FILE)
-    query = '''
+    if filters is None:  # set default filters
+        filters = {
+            'condition': 'melanoma',
+            'sample_type': 'PBMC',
+            'time_from_treatment_start': 0,
+            'treatment': 'miraclib'
+        }
+    where_clauses = []  # apply filters to SQL query
+    params = []
+    if 'condition' in filters and filters['condition'] is not None:
+        where_clauses.append('s.condition = ?')
+        params.append(filters['condition'])
+    if 'sample_type' in filters and filters['sample_type'] is not None:
+        where_clauses.append('sam.sample_type = ?')
+        params.append(filters['sample_type'])
+    if 'time_from_treatment_start' in filters and filters['time_from_treatment_start'] is not None:
+        where_clauses.append('sam.time_from_treatment_start = ?')
+        params.append(filters['time_from_treatment_start'])
+    if 'treatment' in filters and filters['treatment'] is not None:
+        where_clauses.append('s.treatment = ?')
+        params.append(filters['treatment'])
+    where_sql = ''
+    if where_clauses:
+        where_sql = 'WHERE ' + ' AND '.join(where_clauses)
+    query = f'''
     SELECT 
         s.project_id,
         s.subject_id,
@@ -20,11 +44,10 @@ def data_subset_analysis(return_dict=False, filters=None):
         sam.time_from_treatment_start
     FROM samples sam
     JOIN subjects s ON sam.subject_id = s.subject_id
+    {where_sql}
     '''
-    df = pd.read_sql_query(query, conn)
+    df = pd.read_sql_query(query, conn, params=params)
     conn.close()
-
-    # Filters removed; analysis now runs on all samples in the database
 
     if df.empty:
         if return_dict:

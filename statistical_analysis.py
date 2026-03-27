@@ -2,11 +2,11 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy.stats import mannwhitneyu, ttest_ind
-import os
 from initial_analysis import get_cell_frequency_data, DB_FILE
 
 
 def statistical_analysis(return_df=False, test_type='u'):
+    """Perform statistical analysis comparing responders vs non-responders for each cell population."""
     data = get_cell_frequency_data(DB_FILE)
     df = pd.DataFrame(data)
 

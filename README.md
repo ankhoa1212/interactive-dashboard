@@ -54,6 +54,8 @@ streamlit run dashboard.py
 If the project is running locally, use this:
 http://localhost:8501
 
+To see the live demo, go here:
+https://ankhoa1212-interactive-dashboard-dashboard-fixworking-ve-d0dc5v.streamlit.app
 
 ## Database Schema & Rationale
 
